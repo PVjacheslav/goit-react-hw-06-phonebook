@@ -1,29 +1,18 @@
 import {ImBin} from "react-icons/im"
 import { Item, List, Button } from "./ContactList.styled";
 import { useDispatch, useSelector } from "react-redux";
-import { getContacts, getFilter } from "redux/selectors";
+import { getVisibleContacts } from "redux/selectors";
 import { removeContact } from "redux/contactsSlice";
-import { useMemo } from "react";
+
 
 const ContactList = () => {
-    const saveContacts = useSelector(getContacts);
-    const saveFilter = useSelector(getFilter)
+    const saveContacts = useSelector(getVisibleContacts);
     const dispatch = useDispatch();
     const handleDelete = () => dispatch(removeContact());
 
-    const getFilterContacts = useMemo(
-        () =>{
-            const normalizedFilter = saveFilter.toLowerCase();
-            return saveContacts.filter(({ name }) =>
-              name.toLowerCase().includes(normalizedFilter)
-            );
-          },
-          [saveContacts, saveFilter]
-        );
-    const filterContacts = getFilterContacts();
     return(
     <List>
-        {filterContacts.map(contact => (
+        {saveContacts.map(contact => (
       <Item key={contact.id}>
         {contact.name + ' : ' + contact.number}
             {<Button

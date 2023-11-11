@@ -15,7 +15,6 @@ const App = () => {
       <SubTitle>Contacts</SubTitle>
       <Filter />
       {saveContacts.length !== 0 && <ContactList />}
-      consol.log(savedContacts)
     </Container>
   );
 };
