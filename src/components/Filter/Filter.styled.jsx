@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export const Forma = styled.div`
+export const Wrapper = styled.div`
   margin-bottom: 15px;
 `;
 

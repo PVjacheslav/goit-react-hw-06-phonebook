@@ -1,14 +1,29 @@
-import { Forma, Input, Label } from "./Filter.styled"
+import { Input, Label, Wrapper } from "./Filter.styled"
+import { useDispatch, useSelector } from "react-redux";
+import { getFilter } from "redux/selectors";
+import { setFilter } from "redux/contactsSlice";
 
-function Filter({ value, onChangeFilter }) {
+export function Filter() {
+    const dispatch = useDispatch();
+    const saveFilter = useSelector(getFilter);
+
+    const onChange = evt => {
+        const normalizedValue = evt.target.value.toLowerCase().trim();
+
+        dispatch(setFilter(normalizedValue));
+    };
+
     return (
-        <Forma>
+        <Wrapper>
             <Label>
                 Find contacts by name
-                <Input type="text" value={value} onChange={onChangeFilter} />
+                <Input 
+                type="text" 
+                value={saveFilter} 
+                onChange={onChange}
+                name="filter" />
             </Label>
-        </Forma>
+        </Wrapper>
     )
 }
 
-export default Filter;

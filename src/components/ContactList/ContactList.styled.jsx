@@ -29,5 +29,7 @@ export const Button = styled.button`
   font: inherit;
   cursor: pointer;
   border-radius: 4px 8px;
-  border: 3px solid #2450DB ;
+  border: 3px solid #2450DB;
+  display: flex;
+  align-items: center;
 `;

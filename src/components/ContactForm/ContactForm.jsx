@@ -1,47 +1,71 @@
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { ErrMsg, Label, StyledField, StyledForm } from './ContactForm.styled';
-import {ImPlus} from "react-icons/im"
 
-const contactFormSchema = Yup.object().shape({
+import { Formik } from 'formik';
+import {ImPlus} from "react-icons/im"
+import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/contactsSlice';
+import * as Yup from 'yup';
+import { Button, ErrMsg, Label, StyledField, StyledForm } from './ContactForm.styled';
+import Notiflix from 'notiflix';
+
+const initialValues = { name: '', number: '' };
+const schema = Yup.object().shape({
     name:   Yup.string().min(2, "Too short!").required("This field is required!"),
     number: Yup.number().min(4, "Min 4 numbers").required("This field is required!"),
 })
 
-const ContactForm = ({onAdd}) => {
+const ContactForm = () => {
+  
+    const dispatch = useDispatch();
+    const contacts = useSelector(getContacts);
+
+    const handleSubmit = (values, {resetForm})=> {
+        const isInContacts = contacts.find(
+          ({name}) => name.toLowerCase().trim() === values.name.toLowerCase().trim()
+        );
+
+        if (isInContacts) {
+            Notiflix.Notify.failure(`${values.name} is already in contacts!`, {
+                position: 'left-top',
+                distance: '10px',
+              });
+            return;
+            }
+        dispatch(
+            addContact({ 
+                id: nanoid(),
+                name: values.name,
+                number: values.number,
+            })
+        );
+        resetForm();
+    };
+
     return (
-        <div>
-            <Formik
-                initialValues={{
-                    name: '',
-                    number: '',
-                }}
-                validationSchema={contactFormSchema}
-                onSubmit={(values, action) => {
-                 onAdd(values)   
-                    action.resetForm()
-                
-            }}
-            >
-            <StyledForm>
-                <Label>
+        <Formik
+            initialValues={initialValues}
+            validationSchema={schema}
+            onSubmit={handleSubmit}
+        >
+            <StyledForm autoComplete='off'>
+                <Label htmlFor='name'>
                     Name
                         <StyledField type="text" name="name" placeholder="Rosie Simpson" />
-                        <ErrMsg name="name" component="div"/>
+                        <ErrMsg name="name" />
                 </Label>
 
-                <Label>
+                <Label htmlFor='number'>
                     Number
-                        <StyledField type='tel' name="number" required placeholder="459-12-56" />
-                        <ErrMsg name="number" component="div"/>
+                        <StyledField type='tel' name="number" placeholder="459-12-56" required />
+                        <ErrMsg name="number" />
                 </Label>
 
-                    <button type="submit">
+                    <Button type="submit">
                         <ImPlus fill="#2450DB" width="20" height="20"/>
-                        Add Contact</button>
+                        Add Contact</Button>
             </StyledForm>
-            </Formik>
-        </div>
+        </Formik>
     );
 }
 
