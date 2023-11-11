@@ -12,7 +12,7 @@ const ContactList = () => {
     const handleDelete = () => dispatch(removeContact());
 
     const getFilterContacts = useMemo(
-        ()=> () =>{
+        () =>{
             const normalizedFilter = saveFilter.toLowerCase();
             return saveContacts.filter(({ name }) =>
               name.toLowerCase().includes(normalizedFilter)

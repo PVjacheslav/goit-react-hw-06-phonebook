@@ -9,10 +9,8 @@ const contactsSlice = createSlice({
         filter: '',
     },
     reducers: {
-        addContact: {
-            reducer(state, action) {
-                state.contacts.push(action.payload);
-            }
+        addContact(state, action) {
+            state.contacts.push(action.payload);
         },
         setFilter(state, action) {
             state.filter = action.payload;
