@@ -3,10 +3,10 @@ import ContactForm from 'components/ContactForm/ContactForm';
 import ContactList from 'components/ContactList/ContactList';
 import { Filter } from 'components/Filter/Filter';
 import { useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
 
 const App = () => {
-  const saveContacts = useSelector(getContacts);
+  const saveContacts = useSelector(selectContacts);
 
   return (
     <Container>
