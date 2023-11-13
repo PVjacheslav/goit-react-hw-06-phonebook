@@ -8,7 +8,6 @@ import { removeContact } from "redux/contactsSlice";
 const ContactList = () => {
     const saveContacts = useSelector(getVisibleContacts);
     const dispatch = useDispatch();
-    const handleDelete = () => dispatch(removeContact());
 
     return(
     <List>
@@ -18,7 +17,7 @@ const ContactList = () => {
             {<Button
                 type="button"
                 name="delete"
-                onClick={handleDelete}>
+                onClick={() => dispatch(removeContact(contact.id))}>
                 <ImBin fill="#000000" width="20" height="20"/>
                 delete
                 </Button>}
